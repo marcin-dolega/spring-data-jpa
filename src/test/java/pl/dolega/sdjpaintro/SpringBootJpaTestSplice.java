@@ -18,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @DataJpaTest
 @ComponentScan(basePackages = {"pl.dolega.sdjpaintro.bootstrap"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class SpringBootTestSplice {
+public class SpringBootJpaTestSplice {
 
     @Autowired
     BookRepository bookRepository;
