@@ -1,10 +1,12 @@
 package pl.dolega.sdjpaintro.bootstrap;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import pl.dolega.sdjpaintro.domain.Book;
 import pl.dolega.sdjpaintro.repositories.BookRepository;
 
+@Profile({"local", "default"})
 @Component
 public class DataInitializer implements CommandLineRunner {
 
@@ -16,14 +18,12 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        bookRepository.deleteAll();
 
         Book bookDDD = new Book("Domain Driven Design", "0321125215", "Addison-Wesley Professional");
-        Book bookSIA = new Book("Spring in Action", "9781617297571", "O'Reilly");
-
-        System.out.println("Id: " + bookDDD.getId());
         Book savedDDD = bookRepository.save(bookDDD);
 
-        System.out.println("Id: " + bookDDD.getId());
+        Book bookSIA = new Book("Spring in Action", "9781617297571", "O'Reilly");
         Book savedSIA = bookRepository.save(bookSIA);
 
         bookRepository.findAll()
