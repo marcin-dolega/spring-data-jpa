@@ -7,6 +7,9 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
 		http://www.liquibase.org/xml/ns/pro
 		http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd">
-    <include file="db/changelog/baseline-changelog.xml"/>
+    <include file="db/changelog/hibernate-sequence.xml"/>
     <include file="db/changelog/init-hibernate.xml"/>
+    <include file="db/changelog/add-book.xml"/>
+    <include file="db/changelog/add-author.xml"/>
+    <include file="db/changelog/add-author-id-to-book.xml"/>
 </databaseChangeLog>
