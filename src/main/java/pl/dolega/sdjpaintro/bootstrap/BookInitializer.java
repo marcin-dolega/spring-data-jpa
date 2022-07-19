@@ -8,11 +8,11 @@ import pl.dolega.sdjpaintro.repositories.BookRepository;
 
 @Profile({"local", "default"})
 @Component
-public class DataInitializer implements CommandLineRunner {
+public class BookInitializer implements CommandLineRunner {
 
     private final BookRepository bookRepository;
 
-    public DataInitializer(BookRepository bookRepository) {
+    public BookInitializer(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
@@ -21,10 +21,10 @@ public class DataInitializer implements CommandLineRunner {
         bookRepository.deleteAll();
 
         Book bookDDD = new Book("Domain Driven Design", "0321125215", "Addison-Wesley Professional");
-        Book savedDDD = bookRepository.save(bookDDD);
+        bookRepository.save(bookDDD);
 
         Book bookSIA = new Book("Spring in Action", "9781617297571", "O'Reilly");
-        Book savedSIA = bookRepository.save(bookSIA);
+        bookRepository.save(bookSIA);
 
         bookRepository.findAll()
                 .forEach(book -> {
