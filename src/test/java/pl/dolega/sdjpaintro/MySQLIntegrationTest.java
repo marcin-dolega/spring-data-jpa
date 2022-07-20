@@ -9,10 +9,9 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.dolega.sdjpaintro.domain.AuthorUuid;
 import pl.dolega.sdjpaintro.domain.BookNatural;
 import pl.dolega.sdjpaintro.domain.BookUuid;
-import pl.dolega.sdjpaintro.repositories.AuthorUuidRepository;
-import pl.dolega.sdjpaintro.repositories.BookNaturalRepository;
-import pl.dolega.sdjpaintro.repositories.BookRepository;
-import pl.dolega.sdjpaintro.repositories.BookUuidRepository;
+import pl.dolega.sdjpaintro.domain.composite.AuthorComposite;
+import pl.dolega.sdjpaintro.domain.composite.NameId;
+import pl.dolega.sdjpaintro.repositories.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,6 +34,9 @@ public class MySQLIntegrationTest {
 
     @Autowired
     BookNaturalRepository bookNaturalRepository;
+
+    @Autowired
+    AuthorCompositeRepository authorCompositeRepository;
 
     @Test
     void testMySQL() {
@@ -64,8 +66,22 @@ public class MySQLIntegrationTest {
     void bookNaturalTest() {
         BookNatural bookNatural = new BookNatural();
         bookNatural.setTitle("My Book");
-        BookNatural saved = bookNaturalRepository.save(bookNatural);
-        BookNatural fetched = bookNaturalRepository.getReferenceById(saved.getTitle());
+        var saved = bookNaturalRepository.save(bookNatural);
+        var fetched = bookNaturalRepository.getReferenceById(saved.getTitle());
+        assertNotNull(fetched);
+        assertEquals(saved, fetched);
+    }
+
+    @Test
+    void authorCompositeTest() {
+        NameId nameId = new NameId("John", "Cena");
+        AuthorComposite authorComposite = new AuthorComposite();
+        authorComposite.setFirstName(nameId.getFirstName());
+        authorComposite.setLastName(nameId.getLastName());
+        authorComposite.setCountry("US");
+        var saved = authorCompositeRepository.save(authorComposite);
+        assertNotNull(saved);
+        var fetched = authorCompositeRepository.getReferenceById(nameId);
         assertNotNull(fetched);
         assertEquals(saved, fetched);
     }
