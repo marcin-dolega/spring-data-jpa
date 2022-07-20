@@ -7,8 +7,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import pl.dolega.sdjpaintro.domain.AuthorUuid;
+import pl.dolega.sdjpaintro.domain.BookNatural;
 import pl.dolega.sdjpaintro.domain.BookUuid;
 import pl.dolega.sdjpaintro.repositories.AuthorUuidRepository;
+import pl.dolega.sdjpaintro.repositories.BookNaturalRepository;
 import pl.dolega.sdjpaintro.repositories.BookRepository;
 import pl.dolega.sdjpaintro.repositories.BookUuidRepository;
 
@@ -31,6 +33,9 @@ public class MySQLIntegrationTest {
     @Autowired
     BookUuidRepository bookUuidRepository;
 
+    @Autowired
+    BookNaturalRepository bookNaturalRepository;
+
     @Test
     void testMySQL() {
         long countBefore = bookRepository.count();
@@ -39,19 +44,29 @@ public class MySQLIntegrationTest {
 
     @Test
     void testAuthorUuid() {
-        AuthorUuid expected = new AuthorUuid("Martyn", "Groch");
-        authorUuidRepository.save(expected);
-        var actual = authorUuidRepository.getReferenceById(expected.getId());
-        assertNotNull(actual);
-        assertEquals(expected, actual);
+        AuthorUuid author = new AuthorUuid("Martyn", "Groch");
+        authorUuidRepository.save(author);
+        var fetched = authorUuidRepository.getReferenceById(author.getId());
+        assertNotNull(fetched);
+        assertEquals(author, fetched);
     }
 
     @Test
     void testBookUuid() {
-        BookUuid expected = new BookUuid("Przygody Groszka", "666", "Wilkowisko");
-        bookUuidRepository.save(expected);
-        var actual = bookUuidRepository.getReferenceById(expected.getId());
-        assertNotNull(actual);
-        assertEquals(expected, actual);
+        BookUuid book = new BookUuid("Przygody Groszka", "666", "Wilkowisko");
+        bookUuidRepository.save(book);
+        var fetched = bookUuidRepository.getReferenceById(book.getId());
+        assertNotNull(fetched);
+        assertEquals(book, fetched);
+    }
+
+    @Test
+    void bookNaturalTest() {
+        BookNatural bookNatural = new BookNatural();
+        bookNatural.setTitle("My Book");
+        BookNatural saved = bookNaturalRepository.save(bookNatural);
+        BookNatural fetched = bookNaturalRepository.getReferenceById(saved.getTitle());
+        assertNotNull(fetched);
+        assertEquals(saved, fetched);
     }
 }
