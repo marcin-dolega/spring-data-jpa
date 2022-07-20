@@ -1,7 +1,7 @@
-drop table if exists author;
+drop table if exists author_uuid;
 
-create table author (
-    id bigint not null AUTO_INCREMENT,
+create table author_uuid (
+    id varchar(36) not null,
     first_name varchar(255),
     last_name varchar(255),
     primary key (id)

@@ -18,7 +18,6 @@ public class AuthorInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         authorRepository.deleteAll();
 
         Author kido = new Author("Kido", "Dog");
