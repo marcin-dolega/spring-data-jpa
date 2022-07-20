@@ -1,30 +1,33 @@
 package pl.dolega.sdjpaintro.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Objects;
+import java.util.UUID;
+
 @Entity
-public class Book {
+public class BookUuid {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "BINARY(16)", updatable = false, nullable = false)
+    private UUID id;
     private String title;
     private String isbn;
     private String publisher;
-    private Long authorId;
 
-    public Book() {
+    public BookUuid() {
     }
 
-    public Book(String title, String isbn, String publisher, Long authorId) {
+    public BookUuid(String title, String isbn, String publisher) {
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
-        this.authorId = authorId;
     }
 
     @Override
@@ -32,9 +35,9 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Book book = (Book) o;
+        BookUuid bookUuid = (BookUuid) o;
 
-        return Objects.equals(id, book.id);
+        return Objects.equals(id, bookUuid.id);
     }
 
     @Override
@@ -42,11 +45,11 @@ public class Book {
         return id != null ? id.hashCode() : 0;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -73,13 +76,4 @@ public class Book {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
 }
-
