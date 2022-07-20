@@ -10,6 +10,7 @@ import pl.dolega.sdjpaintro.domain.AuthorUuid;
 import pl.dolega.sdjpaintro.domain.BookNatural;
 import pl.dolega.sdjpaintro.domain.BookUuid;
 import pl.dolega.sdjpaintro.domain.composite.AuthorComposite;
+import pl.dolega.sdjpaintro.domain.composite.AuthorEmbedded;
 import pl.dolega.sdjpaintro.domain.composite.NameId;
 import pl.dolega.sdjpaintro.repositories.*;
 
@@ -37,6 +38,9 @@ public class MySQLIntegrationTest {
 
     @Autowired
     AuthorCompositeRepository authorCompositeRepository;
+
+    @Autowired
+    AuthorEmbeddedRepository authorEmbeddedRepository;
 
     @Test
     void testMySQL() {
@@ -82,6 +86,18 @@ public class MySQLIntegrationTest {
         var saved = authorCompositeRepository.save(authorComposite);
         assertNotNull(saved);
         var fetched = authorCompositeRepository.getReferenceById(nameId);
+        assertNotNull(fetched);
+        assertEquals(saved, fetched);
+    }
+
+    @Test
+    void authorEmbeddedTest() {
+        NameId nameId = new NameId("John", "Cena");
+        AuthorEmbedded authorEmbedded = new AuthorEmbedded(nameId);
+        authorEmbedded.setCountry("US");
+        var saved = authorEmbeddedRepository.save(authorEmbedded);
+        assertNotNull(saved);
+        var fetched = authorEmbeddedRepository.getReferenceById(nameId);
         assertNotNull(fetched);
         assertEquals(saved, fetched);
     }
