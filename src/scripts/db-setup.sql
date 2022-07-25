@@ -1,0 +1,14 @@
+DROP DATABASE IF EXISTS my_book_db;
+DROP USER IF EXISTS 'book_admin'@'%';
+DROP USER IF EXISTS 'book_user'@'%';
+
+CREATE DATABASE IF NOT EXISTS my_book_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+CREATE USER IF NOT EXISTS 'book_admin'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, EXECUTE, CREATE VIEW,
+SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON my_book_db.* TO 'book_admin'@'%';
+
+CREATE USER IF NOT EXISTS 'book_user'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+GRANT SELECT, INSERT, UPDATE, DELETE, SHOW VIEW ON my_book_db.* TO 'book_user'@'%';
+
+FLUSH PRIVILEGES;
