@@ -15,6 +15,15 @@ public class Author {
     private String firstName;
     private String lastName;
 
+    public Author() {
+    }
+
+    public Author(Long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     public Long getId() {
         return id;
     }
