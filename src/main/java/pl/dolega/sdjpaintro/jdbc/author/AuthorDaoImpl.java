@@ -3,15 +3,13 @@ package pl.dolega.sdjpaintro.jdbc.author;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 @Component
 public class AuthorDaoImpl implements AuthorDao {
 
     private final DataSource source;
+    private Connection con = null;
     private PreparedStatement ps = null;
     private ResultSet rs = null;
 
@@ -26,7 +24,7 @@ public class AuthorDaoImpl implements AuthorDao {
             ps.setLong(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return new Author(id, rs.getString("first_name"), rs.getString("last_name"));
+                return getAuthorFromRS();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +42,7 @@ public class AuthorDaoImpl implements AuthorDao {
             ps.setString(2, lastName);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return new Author(rs.getLong("id"), firstName, lastName);
+                return getAuthorFromRS();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -54,8 +52,38 @@ public class AuthorDaoImpl implements AuthorDao {
         return null;
     }
 
+    @Override
+    public Author saveNewAuthor(Author author) {
+        try {
+            con = source.getConnection();
+            ps = con.prepareStatement("INSERT INTO author (first_name, last_name) VALUES (?, ?)");
+            ps.setString(1, author.getFirstName());
+            ps.setString(2, author.getLastName());
+            ps.execute();
+
+            Statement statement = con.createStatement();
+            rs = statement.executeQuery("SELECT LAST_INSERT_ID()");
+            if (rs.next()) {
+                Long savedId = rs.getLong(1);
+                return this.getById(savedId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeTransaction();
+        }
+        return null;
+    }
+
+    public Author getAuthorFromRS() throws SQLException {
+        return new Author(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"));
+    }
+
     private void closeTransaction() {
         try {
+            if (con != null) {
+                con.close();
+            }
             if (rs != null) {
                 rs.close();
             }
