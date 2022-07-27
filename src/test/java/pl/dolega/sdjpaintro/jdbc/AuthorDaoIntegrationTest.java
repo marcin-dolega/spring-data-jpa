@@ -6,11 +6,14 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.Assert;
 import pl.dolega.sdjpaintro.jdbc.author.Author;
 import pl.dolega.sdjpaintro.jdbc.author.AuthorDao;
 import pl.dolega.sdjpaintro.jdbc.author.AuthorDaoImpl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -42,4 +45,21 @@ public class AuthorDaoIntegrationTest {
 
         assertThat(saved).isNotNull();
     }
+
+    @Test
+    void testUpdateAuthor() {
+        Author author = new Author();
+        author.setFirstName("Kido");
+        author.setLastName("Dog");
+
+        Author saved = authorDao.saveNewAuthor(author);
+
+        saved.setFirstName("John");
+        saved.setLastName("Thompson");
+
+        Author updated = authorDao.updateAuthor(saved);
+
+        assertEquals("John", updated.getFirstName());
+    }
+
 }
