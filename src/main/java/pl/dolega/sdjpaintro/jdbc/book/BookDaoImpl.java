@@ -1,4 +1,4 @@
-package pl.dolega.sdjpaintro.jdbc.author;
+package pl.dolega.sdjpaintro.jdbc.book;
 
 import org.springframework.stereotype.Component;
 
@@ -6,25 +6,25 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 @Component
-public class AuthorDaoImpl implements AuthorDao {
+public class BookDaoImpl implements BookDao {
 
     private final DataSource source;
-    private Connection con = null;
-    private PreparedStatement ps = null;
-    private ResultSet rs = null;
+    Connection con = null;
+    PreparedStatement ps = null;
+    ResultSet rs = null;
 
-    public AuthorDaoImpl(DataSource source) {
+    public BookDaoImpl(DataSource source) {
         this.source = source;
     }
 
     @Override
-    public Author getById(Long id) {
+    public Book getById(Long id) {
         try {
-            ps = source.getConnection().prepareStatement("SELECT * FROM author WHERE id = ?");
+            ps = source.getConnection().prepareStatement("SELECT * FROM book WHERE id = ?");
             ps.setLong(1, id);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return getAuthorFromRS();
+                return getBookFromRS();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,15 +34,15 @@ public class AuthorDaoImpl implements AuthorDao {
         return null;
     }
 
+
     @Override
-    public Author findByName(String firstName, String lastName) {
+    public Book findByTitle(String title) {
         try {
-            ps = source.getConnection().prepareStatement("SELECT * FROM author WHERE first_name = ? AND last_name = ?");
-            ps.setString(1, firstName);
-            ps.setString(2, lastName);
+            ps = source.getConnection().prepareStatement("SELECT * FROM book WHERE title = ?");
+            ps.setString(1, title);
             rs = ps.executeQuery();
             if (rs.next()) {
-                return getAuthorFromRS();
+                return getBookFromRS();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,19 +53,22 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author saveNewAuthor(Author author) {
+    public Book saveNewBook(Book book) {
         try {
             con = source.getConnection();
-            ps = con.prepareStatement("INSERT INTO author (first_name, last_name) VALUES (?, ?)");
-            ps.setString(1, author.getFirstName());
-            ps.setString(2, author.getLastName());
+            ps = con.prepareStatement("INSERT INTO book (title, isbn, publisher) VALUES (?, ?, ?)");
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getIsbn());
+            ps.setString(3, book.getPublisher());
             ps.execute();
+
             Statement statement = con.createStatement();
             rs = statement.executeQuery("SELECT LAST_INSERT_ID()");
             if (rs.next()) {
                 Long savedId = rs.getLong(1);
                 return this.getById(savedId);
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -74,27 +77,29 @@ public class AuthorDaoImpl implements AuthorDao {
         return null;
     }
 
+
     @Override
-    public Author updateAuthor(Author author) {
+    public Book updateBook(Book book) {
         try {
-            ps = source.getConnection().prepareStatement("UPDATE author SET first_name = ?, last_name = ? WHERE author.id = ?");
-            ps.setString(1, author.getFirstName());
-            ps.setString(2, author.getLastName());
-            ps.setLong(3, author.getId());
+            ps = source.getConnection().prepareStatement("UPDATE book SET title = ?, isbn = ?, publisher = ? WHERE book.id = ?");
+            ps.setString(1, book.getTitle());
+            ps.setString(2, book.getIsbn());
+            ps.setString(3, book.getPublisher());
+            ps.setLong(4, book.getId());
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             closeTransaction();
         }
-        return this.getById(author.getId());
+        return this.getById(book.getId());
     }
 
     @Override
-    public void deleteAuthor(Long id) {
+    public void deleteBook(Long id) {
         try {
             con = source.getConnection();
-            ps = con.prepareStatement("DELETE FROM author where id = ?");
+            ps = con.prepareStatement("DELETE FROM book where id = ?");
             ps.setLong(1, id);
             ps.execute();
         } catch (SQLException e) {
@@ -104,8 +109,8 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
-    public Author getAuthorFromRS() throws SQLException {
-        return new Author(rs.getLong("id"), rs.getString("first_name"), rs.getString("last_name"));
+    public Book getBookFromRS() throws SQLException {
+        return new Book(rs.getLong("id"), rs.getString("title"), rs.getString("isbn"), rs.getString("publisher"), rs.getLong("author_id"));
     }
 
     private void closeTransaction() {

@@ -6,14 +6,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.util.Assert;
 import pl.dolega.sdjpaintro.jdbc.author.Author;
 import pl.dolega.sdjpaintro.jdbc.author.AuthorDao;
 import pl.dolega.sdjpaintro.jdbc.author.AuthorDaoImpl;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -31,8 +29,8 @@ public class AuthorDaoIntegrationTest {
     }
 
     @Test
-    void getAuthorByNameTest() {
-        Author author = authorDao.getByName("Craig", "Walls");
+    void findByNameTest() {
+        Author author = authorDao.findByName("Craig", "Walls");
         assertThat(author).isNotNull();
     }
 
@@ -42,38 +40,25 @@ public class AuthorDaoIntegrationTest {
         author.setFirstName("John");
         author.setLastName("Thompson");
         Author saved = authorDao.saveNewAuthor(author);
-
         assertThat(saved).isNotNull();
     }
 
     @Test
     void updateAuthorTest() {
-        Author author = new Author();
-        author.setFirstName("Kido");
-        author.setLastName("Dog");
-
+        Author author = new Author("Kido", "Dog");
         Author saved = authorDao.saveNewAuthor(author);
-
         saved.setFirstName("John");
         saved.setLastName("Thompson");
-
         Author updated = authorDao.updateAuthor(saved);
-
         assertEquals("John", updated.getFirstName());
     }
 
     @Test
     void deleteAuthorTest() {
-        Author author = new Author();
-        author.setFirstName("John");
-        author.setLastName("Thompson");
-
+        Author author = new Author("John", "Thompson");
         Author saved = authorDao.saveNewAuthor(author);
-
         authorDao.deleteAuthor(saved.getId());
-
         Author deleted = authorDao.getById(saved.getId());
-
         assertThat(deleted).isNull();
     }
 
