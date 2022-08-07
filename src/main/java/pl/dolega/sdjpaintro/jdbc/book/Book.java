@@ -1,9 +1,7 @@
 package pl.dolega.sdjpaintro.jdbc.book;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import pl.dolega.sdjpaintro.jdbc.author.Author;
 
 import java.util.Objects;
 
@@ -17,24 +15,16 @@ public class Book {
     private String title;
     private String isbn;
     private String publisher;
-    private Long authorId;
+    @Transient
+    private Author authorId;
 
     public Book() {
-
     }
 
     public Book(String title, String isbn, String publisher) {
         this.title = title;
         this.isbn = isbn;
         this.publisher = publisher;
-    }
-
-    public Book(Long id, String title, String isbn, String publisher, Long authorId) {
-        this.id = id;
-        this.title = title;
-        this.isbn = isbn;
-        this.publisher = publisher;
-        this.authorId = authorId;
     }
 
     @Override
@@ -84,11 +74,11 @@ public class Book {
         this.publisher = publisher;
     }
 
-    public Long getAuthorId() {
+    public Author getAuthor() {
         return authorId;
     }
 
-    public void setAuthorId(Long authorId) {
+    public void setAuthor(Author authorId) {
         this.authorId = authorId;
     }
 }

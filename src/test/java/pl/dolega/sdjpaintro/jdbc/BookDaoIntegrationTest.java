@@ -4,18 +4,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
+import pl.dolega.sdjpaintro.jdbc.author.Author;
 import pl.dolega.sdjpaintro.jdbc.book.Book;
 import pl.dolega.sdjpaintro.jdbc.book.BookDao;
-import pl.dolega.sdjpaintro.jdbc.book.BookDaoImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("local")
 @DataJpaTest
-@Import(BookDaoImpl.class)
+@ComponentScan(basePackages = {"pl.dolega.sdjpaintro.jdbc.book", "pl.dolega.sdjpaintro.jdbc.author"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class BookDaoIntegrationTest {
 
@@ -37,15 +37,21 @@ public class BookDaoIntegrationTest {
     @Test
     void saveNewBookTest() {
         Book book = new Book("Clean Code", "666", "O'Reilly");
+        Author author = new Author();
+        author.setId(3L);
+        book.setAuthor(author);
         Book saved = bookDao.saveNewBook(book);
         assertThat(saved).isNotNull();
     }
 
     @Test
     void updateBookTest() {
-        Book book = new Book("Kido", "777", "Tiga");
+        Book book = new Book("title", "isbn", "publisher");
+        Author author = new Author();
+        author.setId(1L);
+        book.setAuthor(author);
         Book saved = bookDao.saveNewBook(book);
-        saved.setTitle("Clean Code");
+        saved.setTitle("Bla");
         Book updated = bookDao.updateBook(saved);
         assertEquals("Clean Code", updated.getTitle());
     }
@@ -53,6 +59,9 @@ public class BookDaoIntegrationTest {
     @Test
     void deleteBookTest() {
         Book book = new Book("Kido", "777", "Tiga");
+        Author author = new Author();
+        author.setId(1L);
+        book.setAuthor(author);
         Book saved = bookDao.saveNewBook(book);
         bookDao.deleteBook(saved.getId());
         Book deleted = bookDao.updateBook(saved);

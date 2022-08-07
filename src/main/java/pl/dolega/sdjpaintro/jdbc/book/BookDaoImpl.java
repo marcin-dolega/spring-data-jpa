@@ -1,6 +1,7 @@
 package pl.dolega.sdjpaintro.jdbc.book;
 
 import org.springframework.stereotype.Component;
+import pl.dolega.sdjpaintro.jdbc.author.AuthorDao;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -9,12 +10,15 @@ import java.sql.*;
 public class BookDaoImpl implements BookDao {
 
     private final DataSource source;
+    private final AuthorDao authorDao;
+
     Connection con = null;
     PreparedStatement ps = null;
     ResultSet rs = null;
 
-    public BookDaoImpl(DataSource source) {
+    public BookDaoImpl(DataSource source, AuthorDao authorDao) {
         this.source = source;
+        this.authorDao = authorDao;
     }
 
     @Override
@@ -56,10 +60,13 @@ public class BookDaoImpl implements BookDao {
     public Book saveNewBook(Book book) {
         try {
             con = source.getConnection();
-            ps = con.prepareStatement("INSERT INTO book (title, isbn, publisher) VALUES (?, ?, ?)");
+            ps = con.prepareStatement("INSERT INTO book (title, isbn, publisher, author_id) VALUES (?, ?, ?, ?)");
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getIsbn());
             ps.setString(3, book.getPublisher());
+            if (book.getAuthor() != null) {
+                ps.setLong(4, book.getAuthor().getId());
+            }
             ps.execute();
 
             Statement statement = con.createStatement();
@@ -81,11 +88,14 @@ public class BookDaoImpl implements BookDao {
     @Override
     public Book updateBook(Book book) {
         try {
-            ps = source.getConnection().prepareStatement("UPDATE book SET title = ?, isbn = ?, publisher = ? WHERE book.id = ?");
+            ps = source.getConnection().prepareStatement("UPDATE book SET title = ?, isbn = ?, publisher = ?, author_id = ? WHERE id = ?");
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getIsbn());
             ps.setString(3, book.getPublisher());
-            ps.setLong(4, book.getId());
+            if (book.getAuthor() != null) {
+                ps.setLong(4, book.getAuthor().getId());
+            }
+            ps.setLong(5, book.getId());
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,7 +120,13 @@ public class BookDaoImpl implements BookDao {
     }
 
     public Book getBookFromRS() throws SQLException {
-        return new Book(rs.getLong("id"), rs.getString("title"), rs.getString("isbn"), rs.getString("publisher"), rs.getLong("author_id"));
+        Book book = new Book();
+        book.setId(rs.getLong(1));
+        book.setTitle(rs.getString(2));
+        book.setIsbn(rs.getString(3));
+        book.setPublisher(rs.getString(4));
+        book.setAuthor(authorDao.getById(rs.getLong(5)));
+        return book;
     }
 
     private void closeTransaction() {
