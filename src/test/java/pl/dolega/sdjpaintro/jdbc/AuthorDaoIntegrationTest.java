@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ActiveProfiles("local")
 @DataJpaTest
-@ComponentScan(basePackages = {"pl.dolega.sdjpaintro.jdbc.author"})
+@ComponentScan(basePackages = {"pl.dolega.sdjpaintro.author"})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AuthorDaoIntegrationTest {
 

@@ -1,5 +1,6 @@
 package pl.dolega.sdjpaintro.author;
 
+
 public interface AuthorDao {
 
     Author getById(Long id);
