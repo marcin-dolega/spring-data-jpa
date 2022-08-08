@@ -55,7 +55,7 @@ class AuthorDaoIntegrationTest {
     }
 
     @Test
-        void deleteAuthorTest() {
+    void deleteAuthorTest() {
         Author author = new Author("John", "Thompson");
         Author saved = authorDao.saveNewAuthor(author);
         authorDao.deleteAuthorById(saved.getId());
