@@ -1,4 +1,5 @@
 package pl.dolega.sdjpaintro.book;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,6 @@ public class Book {
     private Long authorId;
 
     public Book() {
-
     }
 
     public Book(String title, String isbn, String publisher) {

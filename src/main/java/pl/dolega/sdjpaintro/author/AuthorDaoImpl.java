@@ -5,7 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthorDaoImpl implements AuthorDao{
+public class AuthorDaoImpl implements AuthorDao {
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -19,7 +19,7 @@ public class AuthorDaoImpl implements AuthorDao{
     }
 
     @Override
-    public Author findAuthorByName(String firstName, String lastName) {
+    public Author findByName(String firstName, String lastName) {
         return jdbcTemplate.queryForObject(
                 "SELECT * FROM author WHERE first_name = ? AND last_name = ?",
                 getRowMapper(),

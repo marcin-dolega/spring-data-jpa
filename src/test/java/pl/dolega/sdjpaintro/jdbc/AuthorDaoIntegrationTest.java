@@ -30,8 +30,8 @@ class AuthorDaoIntegrationTest {
     }
 
     @Test
-    void findAuthorByNameTest() {
-        Author author = authorDao.findAuthorByName("Craig", "Walls");
+    void findByNameTest() {
+        Author author = authorDao.findByName("Craig", "Walls");
         assertThat(author).isNotNull();
     }
 
