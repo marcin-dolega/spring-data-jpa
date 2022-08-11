@@ -95,19 +95,29 @@ public class DaoIntegrationTest {
 //    }
 
     @Test
-    void testDeleteAuthor() {
-        Author author = new Author();
-        author.setFirstName("john");
-        author.setLastName("t");
+    void testGetById() {
 
+        Author author = authorDao.getById(1L);
+
+        assertThat(author).isNotNull();
+
+    }
+
+    @Test
+    void testGetByName() {
+        Author author = authorDao.findByName("Craig", "Walls");
+
+        assertThat(author).isNotNull();
+    }
+
+    @Test
+    void testSaveAuthor() {
+        Author author = new Author();
+        author.setFirstName("John");
+        author.setLastName("Thompson");
         Author saved = authorDao.saveAuthor(author);
 
-        authorDao.deleteById(saved.getId());
-
-        assertThrows(EmptyResultDataAccessException.class, () -> {
-            Author deleted = authorDao.getById(saved.getId());
-        });
-
+        assertThat(saved).isNotNull();
     }
 
     @Test
@@ -125,28 +135,17 @@ public class DaoIntegrationTest {
     }
 
     @Test
-    void testSaveAuthor() {
+    void testDeleteAuthorById() {
         Author author = new Author();
-        author.setFirstName("John");
-        author.setLastName("Thompson");
+        author.setFirstName("john");
+        author.setLastName("t");
+
         Author saved = authorDao.saveAuthor(author);
 
-        assertThat(saved).isNotNull();
-    }
+        authorDao.deleteById(saved.getId());
 
-    @Test
-    void testGetAuthorByName() {
-        Author author = authorDao.findByName("Craig", "Walls");
-
-        assertThat(author).isNotNull();
-    }
-
-    @Test
-    void testGetAuthor() {
-
-        Author author = authorDao.getById(1L);
-
-        assertThat(author).isNotNull();
-
+        assertThrows(EmptyResultDataAccessException.class, () -> {
+            Author deleted = authorDao.getById(saved.getId());
+        });
     }
 }
