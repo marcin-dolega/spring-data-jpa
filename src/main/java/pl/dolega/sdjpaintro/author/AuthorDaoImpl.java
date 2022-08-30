@@ -2,6 +2,7 @@ package pl.dolega.sdjpaintro.author;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,13 +15,18 @@ public class AuthorDaoImpl implements AuthorDao{
     }
 
     @Override
-    public Author getById(Long id) {
+    public Author getAuthorById(Long id) {
         return getEntityManager().find(Author.class, id);
     }
 
     @Override
-    public Author findByName(String firstName, String lastName) {
-        return null;
+    public Author findAuthorByName(String firstName, String lastName) {
+        TypedQuery<Author> query = getEntityManager().createQuery(
+                "SELECT a FROM Author a WHERE a.firstName = :first_name and a.lastName = :last_name", Author.class
+        );
+        query.setParameter("first_name", firstName);
+        query.setParameter("last_name", lastName);
+        return query.getSingleResult();
     }
 
     @Override
