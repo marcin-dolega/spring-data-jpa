@@ -1,5 +1,6 @@
 package pl.dolega.sdjpaintro;
 
+import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -11,6 +12,7 @@ import pl.dolega.sdjpaintro.book.Book;
 import pl.dolega.sdjpaintro.book.BookDao;
 import pl.dolega.sdjpaintro.book.BookDaoImpl;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("local")
@@ -89,5 +91,16 @@ public class BookDaoIntegrationTest {
         assertThat(deleted).isNull();
     }
 
+    @Test
+    void testFindBookByISBN() {
+        Book book = new Book();
+        book.setIsbn("1234" + RandomString.make());
+        book.setTitle("ISBN TEST");
+
+        Book saved = bookDao.saveNewBook(book);
+
+        Book fetched = bookDao.findByISBN(book.getIsbn());
+        assertThat(fetched).isNotNull();
+    }
 
 }
