@@ -10,5 +10,6 @@ public interface AuthorDao {
     Author updateAuthor(Author author);
     void deleteById(Long id);
     List<Author> listAuthorByLastNameLike(String lastName);
+    List<Author> findAll();
 
 }
