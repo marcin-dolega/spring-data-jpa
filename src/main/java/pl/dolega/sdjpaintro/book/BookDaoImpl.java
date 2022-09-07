@@ -14,7 +14,10 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Book getById(Long id) {
-        return getEntityManager().find(Book.class, id);
+        EntityManager em = getEntityManager();
+        Book book = em.find(Book.class, id);
+        em.close();
+        return book;
     }
 
     @Override
@@ -33,6 +36,7 @@ public class BookDaoImpl implements BookDao {
         em.persist(book);
         em.flush();
         em.getTransaction().commit();
+        em.close();
         return book;
     }
 
@@ -57,6 +61,7 @@ public class BookDaoImpl implements BookDao {
         em.remove(book);
         em.flush();
         em.getTransaction().commit();
+        em.close();
     }
 
     private EntityManager getEntityManager() {

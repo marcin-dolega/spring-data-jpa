@@ -16,7 +16,9 @@ public class AuthorDaoImpl implements AuthorDao{
 
     @Override
     public Author getAuthorById(Long id) {
-        return getEntityManager().find(Author.class, id);
+        EntityManager em = getEntityManager();
+        Author author = em.find(Author.class, id);
+        return author;
     }
 
     @Override
@@ -31,32 +33,35 @@ public class AuthorDaoImpl implements AuthorDao{
 
     @Override
     public Author saveAuthor(Author author) {
-        EntityManager entityManager = getEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.persist(author);
-        entityManager.flush();
-        entityManager.getTransaction().commit();
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        em.persist(author);
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
         return author;
     }
 
     @Override
     public Author updateAuthor(Author author) {
-        EntityManager entityManager = getEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.merge(author);
-        entityManager.flush();
-        entityManager.clear();
-        return entityManager.find(Author.class, author.getId());
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        em.merge(author);
+        em.flush();
+        em.clear();
+        em.close();
+        return em.find(Author.class, author.getId());
     }
 
     @Override
     public void deleteById(Long id) {
-        EntityManager entityManager = getEntityManager();
-        entityManager.getTransaction().begin();
-        Author author = entityManager.find(Author.class, id);
-        entityManager.remove(author);
-        entityManager.flush();
-        entityManager.getTransaction().commit();
+        EntityManager em = getEntityManager();
+        em.getTransaction().begin();
+        Author author = em.find(Author.class, id);
+        em.remove(author);
+        em.flush();
+        em.getTransaction().commit();
+        em.close();
     }
 
     private EntityManager getEntityManager() {
