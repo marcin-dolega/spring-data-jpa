@@ -2,11 +2,14 @@ package pl.dolega.sdjpaintro.author;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
-public class AuthorDaoImpl implements AuthorDao{
+public class AuthorDaoImpl implements AuthorDao {
 
     private final EntityManagerFactory emf;
 
@@ -62,6 +65,19 @@ public class AuthorDaoImpl implements AuthorDao{
         em.flush();
         em.getTransaction().commit();
         em.close();
+    }
+
+    @Override
+    public List<Author> listAuthorByLastNameLike(String lastName) {
+        EntityManager em = getEntityManager();
+        try {
+            Query query = em.createQuery("SELECT a FROM Author a WHERE a.lastName like :last_name");
+            query.setParameter("last_name", lastName + "%");
+            List<Author> authors = query.getResultList();
+            return authors;
+        } finally {
+            em.close();
+        }
     }
 
     private EntityManager getEntityManager() {

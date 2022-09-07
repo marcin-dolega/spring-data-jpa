@@ -11,6 +11,8 @@ import pl.dolega.sdjpaintro.author.Author;
 import pl.dolega.sdjpaintro.author.AuthorDao;
 import pl.dolega.sdjpaintro.author.AuthorDaoImpl;
 
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -78,4 +80,13 @@ public class AuthorDaoIntegrationTest {
 
         assertThat(authorDao.getAuthorById(saved.getId()));
     }
+
+    @Test
+    void testListAuthorByLastNameLike() {
+        List<Author> authors = authorDao.listAuthorByLastNameLike("Wall");
+
+        assertThat(authors).isNotNull();
+        assertThat(authors.size()).isGreaterThan(0);
+    }
+
 }

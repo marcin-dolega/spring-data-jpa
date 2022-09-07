@@ -1,5 +1,7 @@
 package pl.dolega.sdjpaintro.author;
 
+import java.util.List;
+
 public interface AuthorDao {
 
     Author getAuthorById(Long id);
@@ -7,4 +9,6 @@ public interface AuthorDao {
     Author saveAuthor(Author author);
     Author updateAuthor(Author author);
     void deleteById(Long id);
+    List<Author> listAuthorByLastNameLike(String lastName);
+
 }
