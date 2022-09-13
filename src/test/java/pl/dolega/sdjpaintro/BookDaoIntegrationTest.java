@@ -12,7 +12,8 @@ import pl.dolega.sdjpaintro.book.Book;
 import pl.dolega.sdjpaintro.book.BookDao;
 import pl.dolega.sdjpaintro.book.BookDaoImpl;
 
-import static org.assertj.core.api.Assertions.as;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("local")
@@ -101,6 +102,21 @@ public class BookDaoIntegrationTest {
 
         Book fetched = bookDao.findByISBN(book.getIsbn());
         assertThat(fetched).isNotNull();
+    }
+
+    @Test
+    void testFindByTitle() {
+        Book book = bookDao.findBookByTitleNQ("Clean Code");
+
+        assertThat(book).isNotNull();
+    }
+
+    @Test
+    void testFindAllBooks() {
+        List<Book> books = bookDao.findAll();
+
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isGreaterThan(0);
     }
 
 }

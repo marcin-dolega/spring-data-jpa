@@ -3,7 +3,11 @@ package pl.dolega.sdjpaintro.book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+
+@Component
 public class BookDaoImpl implements BookDao {
 
     private final EntityManagerFactory emf;
@@ -73,6 +77,30 @@ public class BookDaoImpl implements BookDao {
             query.setParameter("isbn", isbn);
             Book book = query.getSingleResult();
             return book;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Book findBookByTitleNQ(String title) {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Book> typedQuery = em.createNamedQuery("find_by_title", Book.class);
+            typedQuery.setParameter("title", title);
+            return typedQuery.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Book> findAll() {
+        EntityManager em = getEntityManager();
+
+        try {
+            TypedQuery<Book> typedQuery = em.createNamedQuery("book_find_all", Book.class);
+            return typedQuery.getResultList();
         } finally {
             em.close();
         }

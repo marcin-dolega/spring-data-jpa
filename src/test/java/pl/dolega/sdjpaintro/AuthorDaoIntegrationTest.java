@@ -96,4 +96,5 @@ public class AuthorDaoIntegrationTest {
         assertThat(authors).isNotNull();
         assertThat(authors.size()).isGreaterThan(0);
     }
+
 }
