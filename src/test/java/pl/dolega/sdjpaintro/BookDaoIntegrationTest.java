@@ -126,4 +126,10 @@ public class BookDaoIntegrationTest {
         assertThat(book).isNotNull();
     }
 
+    @Test
+    void testFindBookByTitleNative() {
+        Book book = bookDao.findBookByTitleNative("Clean Code");
+
+        assertThat(book).isNotNull();
+    }
 }
