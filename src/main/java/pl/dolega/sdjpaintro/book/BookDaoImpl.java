@@ -3,6 +3,7 @@ package pl.dolega.sdjpaintro.book;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -101,6 +102,30 @@ public class BookDaoImpl implements BookDao {
         try {
             TypedQuery<Book> typedQuery = em.createNamedQuery("book_find_all", Book.class);
             return typedQuery.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Book findBookByTitleCriteria(String title) {
+        EntityManager em = getEntityManager();
+
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Book> cq = cb.createQuery(Book.class);
+
+            Root<Book> root = cq.from(Book.class);
+
+            ParameterExpression<String> titleParam = cb.parameter(String.class);
+            Predicate titlePred = cb.equal(root.get("title"), titleParam);
+
+            cq.select(root).where(titlePred);
+
+            TypedQuery<Book> typedQuery = em.createQuery(cq);
+            typedQuery.setParameter(titleParam, title);
+
+            return typedQuery.getSingleResult();
         } finally {
             em.close();
         }

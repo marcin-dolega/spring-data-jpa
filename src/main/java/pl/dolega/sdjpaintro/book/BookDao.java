@@ -12,6 +12,5 @@ public interface BookDao {
     Book findByISBN(String isbn);
     Book findBookByTitleNQ(String title);
     List<Book> findAll();
-
-
+    Book findBookByTitleCriteria(String title);
 }

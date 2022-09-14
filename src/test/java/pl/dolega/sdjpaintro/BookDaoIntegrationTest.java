@@ -119,4 +119,11 @@ public class BookDaoIntegrationTest {
         assertThat(books.size()).isGreaterThan(0);
     }
 
+    @Test
+    void testFindBookByTitleCriteria() {
+        Book book = bookDao.findBookByTitleCriteria("Clean Code");
+
+        assertThat(book).isNotNull();
+    }
+
 }
