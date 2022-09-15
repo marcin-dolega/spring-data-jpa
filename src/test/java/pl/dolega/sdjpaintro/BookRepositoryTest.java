@@ -10,11 +10,12 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.dolega.sdjpaintro.book.Book;
 import pl.dolega.sdjpaintro.book.BookRepo;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ActiveProfiles("local")
 @DataJpaTest
@@ -51,5 +52,14 @@ public class BookRepositoryTest {
         });
 
         assertThat(count.get()).isGreaterThan(0);
+    }
+
+    @Test
+    void testBookFuture() throws ExecutionException, InterruptedException {
+        Future<Book> bookFuture = bookRepo.queryByTitle("Clean Code");
+
+        Book book = bookFuture.get();
+
+        assertNotNull(book);
     }
 }
