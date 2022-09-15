@@ -24,10 +24,13 @@ public interface BookRepo extends JpaRepository<Book, Long> {
     @Async
     Future<Book> queryByTitle(String title);
 
-    @Query("SELECT b FROM Book b WHERE b.title=?1")
+    @Query("SELECT b FROM Book b WHERE b.title =?1")
     Book findBookByTitleWithQuery(String title);
 
-    @Query("SELECT b FROM Book b WHERE b.title=:title")
+    @Query("SELECT b FROM Book b WHERE b.title =:title")
     Book findBookByTitleWithQueryNamed(@Param("title") String title);
+
+    @Query(value = "SELECT * FROM book WHERE title =:title", nativeQuery = true)
+    Book findBookByTitleWithQueryNative(@Param("title") String title);
 
 }
