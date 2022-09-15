@@ -79,4 +79,11 @@ public class BookRepositoryTest {
         assertNotNull(book);
     }
 
+    @Test
+    void testBookQueryJPANamed() {
+        Book book = bookRepo.jpaNamed("Clean Code");
+        assertNotNull(book);
+    }
+
+
 }
