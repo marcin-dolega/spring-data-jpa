@@ -1,5 +1,6 @@
 package pl.dolega.sdjpaintro.author;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,8 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Author findAuthorByName(String firstName, String lastName) {
-        return authorRepo.findAuthorByFirstNameAndLastName(firstName, lastName);
+        return authorRepo.findAuthorByFirstNameAndLastName(firstName, lastName)
+                .orElseThrow(EntityNotFoundException::new);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package pl.dolega.sdjpaintro;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -71,6 +72,13 @@ public class AuthorDaoIntegrationTest {
         Author author = authorDao.findAuthorByName("Craig", "Walls");
 
         assertThat(author).isNotNull();
+    }
+
+    @Test
+    void testGetAuthorByNameNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            Author author = authorDao.findAuthorByName("Kido", "Tiga");
+        });
     }
 
     @Test
