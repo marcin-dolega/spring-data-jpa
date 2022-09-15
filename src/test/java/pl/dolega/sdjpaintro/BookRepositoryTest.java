@@ -10,6 +10,9 @@ import org.springframework.test.context.ActiveProfiles;
 import pl.dolega.sdjpaintro.book.Book;
 import pl.dolega.sdjpaintro.book.BookRepo;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -37,5 +40,16 @@ public class BookRepositoryTest {
     @Test
     void testNoException() {
         assertNull(bookRepo.getByTitle("Groch"));
+    }
+
+    @Test
+    void testBookStream() {
+        AtomicInteger count = new AtomicInteger();
+
+        bookRepo.findAllByTitleNotNull().forEach(book -> {
+            count.incrementAndGet();
+        });
+
+        assertThat(count.get()).isGreaterThan(0);
     }
 }
