@@ -57,7 +57,7 @@ public class BookDaoJDBCTemplate implements BookDao {
 
     @Override
     public List<Book> findAll() {
-        return null;
+        return jdbcTemplate.query("SELECT * FROM book", getBookMapper());
     }
 
     @Override

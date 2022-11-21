@@ -6,7 +6,6 @@ import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
 import org.springframework.stereotype.Component;
-import pl.dolega.sdjpaintro.author.Author;
 
 import java.util.List;
 
