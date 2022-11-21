@@ -1,5 +1,6 @@
 package pl.dolega.sdjpaintro.book;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
@@ -63,6 +64,11 @@ public class BookDaoJDBCTemplate implements BookDao {
     @Override
     public List<Book> findAll(int pageSize, int offset) {
         return jdbcTemplate.query("SELECT * FROM book limit ? offset ?", getBookMapper(), pageSize, offset);
+    }
+
+    @Override
+    public List<Book> findAll(Pageable pageable) {
+        return jdbcTemplate.query("SELECT * FROM book limit ? offset ?", getBookMapper(), pageable.getPageSize(), pageable.getOffset());
     }
 
     @Override

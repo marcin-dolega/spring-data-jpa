@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -110,6 +111,11 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> findAll(int pageSize, int offset) {
+        return null;
+    }
+
+    @Override
+    public List<Book> findAll(Pageable pageable) {
         return null;
     }
 
