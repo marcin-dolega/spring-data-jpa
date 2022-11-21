@@ -109,6 +109,11 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public List<Book> findAll(int pageSize, int offset) {
+        return null;
+    }
+
+    @Override
     public Book findBookByTitleCriteria(String title) {
         EntityManager em = getEntityManager();
 

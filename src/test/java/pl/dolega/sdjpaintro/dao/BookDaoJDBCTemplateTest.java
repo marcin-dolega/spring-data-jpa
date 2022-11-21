@@ -55,6 +55,28 @@ public class BookDaoJDBCTemplateTest {
     }
 
     @Test
+    void findAllPage1() {
+        List<Book> books = bookDao.findAll(10,0);
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
+    }
+
+    @Test
+    void findAllPage2() {
+        List<Book> books = bookDao.findAll(10,10);
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
+    }
+
+    @Test
+    void findAllPage3() {
+        List<Book> books = bookDao.findAll(10,30);
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
+    }
+
+
+    @Test
     void saveBook() {
         Book book = new Book();
         book.setIsbn("1234");

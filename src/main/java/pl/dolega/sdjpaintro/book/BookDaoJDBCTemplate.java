@@ -61,6 +61,11 @@ public class BookDaoJDBCTemplate implements BookDao {
     }
 
     @Override
+    public List<Book> findAll(int pageSize, int offset) {
+        return jdbcTemplate.query("SELECT * FROM book limit ? offset ?", getBookMapper(), pageSize, offset);
+    }
+
+    @Override
     public Book findBookByTitleCriteria(String title) {
         return null;
     }

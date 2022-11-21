@@ -12,6 +12,7 @@ public interface BookDao {
     Book findByISBN(String isbn);
     Book findBookByTitleNQ(String title);
     List<Book> findAll();
+    List<Book> findAll(int pageSize, int offset);
     Book findBookByTitleCriteria(String title);
     Book findBookByTitleNative(String title);
 }
