@@ -72,6 +72,15 @@ public class BookDaoJDBCTemplate implements BookDao {
     }
 
     @Override
+    public List<Book> findALlSortByTitle(Pageable pageable) {
+        String sql = "SELECT * FROM book order by title "
+                + pageable.getSort().getOrderFor("title").getDirection().name()
+                + " limit ? offset ?";
+        System.out.println(sql);
+        return jdbcTemplate.query(sql, getBookMapper(), pageable.getPageSize(), pageable.getOffset());
+    }
+
+    @Override
     public Book findBookByTitleCriteria(String title) {
         return null;
     }

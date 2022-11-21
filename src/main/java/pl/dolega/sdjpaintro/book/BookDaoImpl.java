@@ -120,6 +120,11 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
+    public List<Book> findALlSortByTitle(Pageable pageable) {
+        return null;
+    }
+
+    @Override
     public Book findBookByTitleCriteria(String title) {
         EntityManager em = getEntityManager();
 

@@ -16,6 +16,7 @@ public interface BookDao {
     List<Book> findAll();
     List<Book> findAll(int pageSize, int offset);
     List<Book> findAll(Pageable pageable);
+    List<Book> findALlSortByTitle(Pageable pageable);
     Book findBookByTitleCriteria(String title);
     Book findBookByTitleNative(String title);
 }
