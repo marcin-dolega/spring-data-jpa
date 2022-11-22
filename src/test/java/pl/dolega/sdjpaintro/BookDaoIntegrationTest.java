@@ -34,7 +34,7 @@ public class BookDaoIntegrationTest {
 
     @Test
     void testGetBookByTitle() {
-        Book book = bookDao.findBookByTitle("Clean Code");
+        Book book = bookDao.findByTitle("Clean Code");
 
         assertThat(book).isNotNull();
     }

@@ -19,7 +19,7 @@ public class BookDaoJDBCTemplate implements BookDao {
     }
 
     @Override
-    public Book findBookByTitle(String title) {
+    public Book findByTitle(String title) {
         return jdbcTemplate.queryForObject("SELECT * FROM book where title = ?", getBookMapper(), title);
     }
 

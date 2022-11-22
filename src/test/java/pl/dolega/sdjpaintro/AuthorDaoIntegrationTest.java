@@ -29,13 +29,13 @@ public class AuthorDaoIntegrationTest {
 
     @Test
     void testGetById() {
-        Author author = authorDao.getAuthorById(1L);
+        Author author = authorDao.getById(1L);
         assertThat(author).isNotNull();
     }
 
     @Test
     void testGetByName() {
-        Author author = authorDao.findAuthorByName("Craig", "Walls");
+        Author author = authorDao.findByName("Craig", "Walls");
         assertThat(author).isNotNull();
     }
 
@@ -74,10 +74,10 @@ public class AuthorDaoIntegrationTest {
 
         authorDao.deleteById(saved.getId());
 
-        Author deleted = authorDao.getAuthorById(saved.getId());
+        Author deleted = authorDao.getById(saved.getId());
         assertThat(deleted).isNull();
 
-        assertThat(authorDao.getAuthorById(saved.getId()));
+        assertThat(authorDao.getById(saved.getId()));
     }
 
     @Test

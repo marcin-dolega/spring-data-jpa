@@ -17,7 +17,6 @@ import pl.dolega.sdjpaintro.book.BookDaoJDBCTemplate;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -44,7 +43,7 @@ public class BookDaoJDBCTemplateTest {
 
     @Test
     void findTitle() {
-        Book book = bookDao.findBookByTitle("Clean Code");
+        Book book = bookDao.findByTitle("Clean Code");
 
         assertThat(book).isNotNull();
     }

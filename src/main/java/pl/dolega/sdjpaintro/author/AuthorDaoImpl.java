@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,14 +20,14 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author getAuthorById(Long id) {
+    public Author getById(Long id) {
         EntityManager em = getEntityManager();
         Author author = em.find(Author.class, id);
         return author;
     }
 
     @Override
-    public Author findAuthorByName(String firstName, String lastName) {
+    public Author findByName(String firstName, String lastName) {
         EntityManager em = getEntityManager();
 //        TypedQuery<Author> query = em.createQuery(
 //                "SELECT a FROM Author a WHERE a.firstName = :first_name and a.lastName = :last_name", Author.class
@@ -71,17 +72,27 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public List<Author> listAuthorByLastNameLike(String lastName) {
-        EntityManager em = getEntityManager();
-        try {
-            Query query = em.createQuery("SELECT a FROM Author a WHERE a.lastName like :last_name");
-            query.setParameter("last_name", lastName + "%");
-            List<Author> authors = query.getResultList();
-            return authors;
-        } finally {
-            em.close();
-        }
+    public List<Author> findAllByLastName(String lastName) {
+        return null;
     }
+
+    @Override
+    public List<Author> findAllByLastName(String lastName, Pageable pageable) {
+        return null;
+    }
+
+//    @Override
+//    public List<Author> listAuthorByLastNameLike(String lastName) {
+//        EntityManager em = getEntityManager();
+//        try {
+//            Query query = em.createQuery("SELECT a FROM Author a WHERE a.lastName like :last_name");
+//            query.setParameter("last_name", lastName + "%");
+//            List<Author> authors = query.getResultList();
+//            return authors;
+//        } finally {
+//            em.close();
+//        }
+//    }
 
     @Override
     public List<Author> findAll() {
@@ -137,6 +148,11 @@ public class AuthorDaoImpl implements AuthorDao {
         } finally {
             em.close();
         }
+    }
+
+    @Override
+    public List<Author> listAuthorByLastNameLike(String lastName) {
+        return null;
     }
 
     private EntityManager getEntityManager() {

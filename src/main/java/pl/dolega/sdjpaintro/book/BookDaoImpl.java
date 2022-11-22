@@ -28,7 +28,7 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book findBookByTitle(String title) {
+    public Book findByTitle(String title) {
         TypedQuery<Book> query = getEntityManager().createQuery(
                 "SELECT a FROM Book a WHERE a.title =:title", Book.class
         );

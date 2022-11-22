@@ -48,6 +48,16 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<version>7.0.0</version>
+				<configuration>
+					<url>jdbc:mysql://127.0.0.1:3306/bookdb</url>
+					<user>root</user>
+					<password>password</password>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<repositories>
