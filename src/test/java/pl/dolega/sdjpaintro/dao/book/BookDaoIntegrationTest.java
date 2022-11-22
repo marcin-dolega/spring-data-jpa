@@ -1,4 +1,4 @@
-package pl.dolega.sdjpaintro;
+package pl.dolega.sdjpaintro.dao.book;
 
 import net.bytebuddy.utility.RandomString;
 import org.junit.jupiter.api.Test;
@@ -85,31 +85,14 @@ public class BookDaoIntegrationTest {
         book.setTitle("my book");
         Book saved = bookDao.saveNewBook(book);
 
-        bookDao.deleteBookById(saved.getId());
+        bookDao.deleteById(saved.getId());
 
         Book deleted = bookDao.getById(saved.getId());
 
         assertThat(deleted).isNull();
     }
 
-    @Test
-    void testFindBookByISBN() {
-        Book book = new Book();
-        book.setIsbn("1234" + RandomString.make());
-        book.setTitle("ISBN TEST");
 
-        Book saved = bookDao.saveNewBook(book);
-
-        Book fetched = bookDao.findByISBN(book.getIsbn());
-        assertThat(fetched).isNotNull();
-    }
-
-    @Test
-    void testFindByTitle() {
-        Book book = bookDao.findBookByTitleNQ("Clean Code");
-
-        assertThat(book).isNotNull();
-    }
 
     @Test
     void testFindAllBooks() {
@@ -119,17 +102,4 @@ public class BookDaoIntegrationTest {
         assertThat(books.size()).isGreaterThan(0);
     }
 
-    @Test
-    void testFindBookByTitleCriteria() {
-        Book book = bookDao.findBookByTitleCriteria("Clean Code");
-
-        assertThat(book).isNotNull();
-    }
-
-    @Test
-    void testFindBookByTitleNative() {
-        Book book = bookDao.findBookByTitleNative("Clean Code");
-
-        assertThat(book).isNotNull();
-    }
 }

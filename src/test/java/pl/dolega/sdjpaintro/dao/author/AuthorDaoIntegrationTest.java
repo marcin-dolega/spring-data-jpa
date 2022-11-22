@@ -1,4 +1,4 @@
-package pl.dolega.sdjpaintro;
+package pl.dolega.sdjpaintro.dao.author;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

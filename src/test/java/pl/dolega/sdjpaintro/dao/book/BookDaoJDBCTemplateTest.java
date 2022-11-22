@@ -1,4 +1,4 @@
-package pl.dolega.sdjpaintro.dao;
+package pl.dolega.sdjpaintro.dao.book;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -99,7 +99,7 @@ public class BookDaoJDBCTemplateTest {
 
     @Test
     void findAllPage1_SortByTitle() {
-        List<Book> books = bookDao.findALlSortByTitle(PageRequest.of(0, 10,
+        List<Book> books = bookDao.findAllSortByTitle(PageRequest.of(0, 10,
                 Sort.by(Sort.Order.desc("title"))));
         assertThat(books).isNotNull();
         assertThat(books.size()).isEqualTo(10);
@@ -150,7 +150,7 @@ public class BookDaoJDBCTemplateTest {
         book.setTitle("my book");
         Book saved = bookDao.saveNewBook(book);
 
-        bookDao.deleteBookById(saved.getId());
+        bookDao.deleteById(saved.getId());
 
 
         assertThrows(EmptyResultDataAccessException.class, () -> {

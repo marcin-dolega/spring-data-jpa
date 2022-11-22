@@ -1,4 +1,4 @@
-package pl.dolega.sdjpaintro.dao;
+package pl.dolega.sdjpaintro.dao.author;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

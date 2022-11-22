@@ -42,18 +42,8 @@ public class BookDaoJDBCTemplate implements BookDao {
     }
 
     @Override
-    public void deleteBookById(Long id) {
+    public void deleteById(Long id) {
         jdbcTemplate.update("DELETE from book where id = ?", id);
-    }
-
-    @Override
-    public Book findByISBN(String isbn) {
-        return null;
-    }
-
-    @Override
-    public Book findBookByTitleNQ(String title) {
-        return null;
     }
 
     @Override
@@ -72,22 +62,11 @@ public class BookDaoJDBCTemplate implements BookDao {
     }
 
     @Override
-    public List<Book> findALlSortByTitle(Pageable pageable) {
+    public List<Book> findAllSortByTitle(Pageable pageable) {
         String sql = "SELECT * FROM book order by title "
                 + pageable.getSort().getOrderFor("title").getDirection().name()
                 + " limit ? offset ?";
-        System.out.println(sql);
         return jdbcTemplate.query(sql, getBookMapper(), pageable.getPageSize(), pageable.getOffset());
-    }
-
-    @Override
-    public Book findBookByTitleCriteria(String title) {
-        return null;
-    }
-
-    @Override
-    public Book findBookByTitleNative(String title) {
-        return null;
     }
 
     private BookMapper getBookMapper() {
