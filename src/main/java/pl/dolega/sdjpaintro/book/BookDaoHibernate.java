@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -102,7 +101,20 @@ public class BookDaoHibernate implements BookDao {
 
     @Override
     public List<Book> findAllSortByTitle(Pageable pageable) {
-        return null;
+        EntityManager em = getEntityManager();
+        try {
+            String hql = "SELECT b FROM Book b order by b.title " +
+                    pageable.getSort()
+                            .getOrderFor("title")
+                            .getDirection()
+                            .name();
+            TypedQuery<Book> query = em.createQuery(hql, Book.class);
+            query.setFirstResult(Math.toIntExact(pageable.getOffset()));
+            query.setMaxResults(pageable.getPageSize());
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
     private EntityManager getEntityManager() {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import pl.dolega.sdjpaintro.author.Author;
 import pl.dolega.sdjpaintro.book.Book;
@@ -33,14 +34,14 @@ public class BookDaoHibernateTest {
     }
 
     @Test
-    void GetById() {
+    void getBookById() {
         Book book = bookDao.getById(3L);
 
         assertThat(book.getId()).isNotNull();
     }
 
     @Test
-    void getByTitle() {
+    void getBookByTitle() {
         Book book = bookDao.findByTitle("Clean Code");
 
         assertThat(book).isNotNull();
@@ -48,7 +49,7 @@ public class BookDaoHibernateTest {
 
 
     @Test
-    void save() {
+    void saveBook() {
         Book book = new Book();
         book.setIsbn("1234");
         book.setPublisher("Self");
@@ -64,7 +65,7 @@ public class BookDaoHibernateTest {
     }
 
     @Test
-    void update() {
+    void updateBook() {
         Book book = new Book();
         book.setIsbn("1234");
         book.setPublisher("Self");
@@ -85,7 +86,7 @@ public class BookDaoHibernateTest {
     }
 
     @Test
-    void delete() {
+    void deleteBook() {
         Book book = new Book();
         book.setIsbn("1234");
         book.setPublisher("Self");
@@ -100,8 +101,17 @@ public class BookDaoHibernateTest {
     }
 
     @Test
-    void findAll() {
+    void findAllBooks() {
         List<Book> books = bookDao.findAll(PageRequest.of(0, 10));
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
+    }
+
+    @Test
+    void findAllBooksSortByTitle() {
+        List<Book> books = bookDao.findAllSortByTitle(
+                PageRequest.of(0, 10, Sort.by(Sort.Order.desc("title")))
+        );
         assertThat(books).isNotNull();
         assertThat(books.size()).isEqualTo(10);
     }
