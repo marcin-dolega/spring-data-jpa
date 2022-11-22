@@ -81,14 +81,6 @@ public class AuthorDaoIntegrationTest {
     }
 
     @Test
-    void testListAuthorByLastNameLike() {
-        List<Author> authors = authorDao.listAuthorByLastNameLike("Wall");
-
-        assertThat(authors).isNotNull();
-        assertThat(authors.size()).isGreaterThan(0);
-    }
-
-    @Test
     void testFindAllAuthors() {
         List<Author> authors = authorDao.findAll();
 
@@ -96,17 +88,4 @@ public class AuthorDaoIntegrationTest {
         assertThat(authors.size()).isGreaterThan(0);
     }
 
-    @Test
-    void testGetAuthorByNameCriteria() {
-        Author author = authorDao.findAuthorByNameCriteria("Craig", "Walls");
-
-        assertThat(author).isNotNull();
-    }
-
-    @Test
-    void testGetAuthorByNameNative() {
-        Author author = authorDao.findAuthorByNameNative("Craig", "Walls");
-
-        assertThat(author).isNotNull();
-    }
 }

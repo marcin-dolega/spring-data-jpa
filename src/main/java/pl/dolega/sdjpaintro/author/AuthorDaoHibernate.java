@@ -65,21 +65,6 @@ public class AuthorDaoHibernate implements AuthorDao {
         return null;
     }
 
-    @Override
-    public Author findAuthorByNameCriteria(String firstName, String lastName) {
-        return null;
-    }
-
-    @Override
-    public Author findAuthorByNameNative(String firstName, String lastName) {
-        return null;
-    }
-
-    @Override
-    public List<Author> listAuthorByLastNameLike(String lastName) {
-        return null;
-    }
-
     private EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
